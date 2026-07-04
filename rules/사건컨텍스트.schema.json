@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "사건컨텍스트",
+  "description": "민사사건 canonical 컨텍스트. 모든 서면 작성 스킬의 단일 진실 공급원.",
+  "type": "object",
+  "required": ["사건", "당사자", "사실관계", "쟁점", "증거", "청구", "확인필요"],
+  "properties": {
+    "사건": {
+      "type": "object",
+      "required": ["사건명", "제출법원", "수임범위", "심급"],
+      "properties": {
+        "사건명": { "type": "string", "description": "예: 해고무효확인 및 임금 등 청구의 소" },
+        "사건번호": { "type": ["string", "null"], "description": "소 제기 전이면 null. 예: 2026가합12345" },
+        "제출법원": { "type": "string" },
+        "수임범위": { "type": "string" },
+        "심급": { "type": "string", "enum": ["1심", "항소심", "상고심"] }
+      }
+    },
+    "당사자": {
+      "type": "object",
+      "required": ["원고", "피고", "소송대리인"],
+      "properties": {
+        "원고": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["성명"],
+            "properties": {
+              "성명": { "type": "string" },
+              "주민번호": { "type": "string", "description": "뒷자리 마스킹 예: 800101-1******" },
+              "주소": { "type": "string" },
+              "우편번호": { "type": "string" },
+              "전화": { "type": "string" },
+              "이메일": { "type": "string" }
+            }
+          }
+        },
+        "피고": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["명칭"],
+            "properties": {
+              "명칭": { "type": "string" },
+              "주소": { "type": "string" },
+              "우편번호": { "type": "string" },
+              "대표자": { "type": "string", "description": "법인인 경우" }
+            }
+          }
+        },
+        "소송대리인": {
+          "type": "object",
+          "properties": {
+            "표시": { "type": "string", "description": "예: 법무법인 ○○ 담당변호사 ○○○" },
+            "주소": { "type": "string" }
+          }
+        }
+      }
+    },
+    "사실관계": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["일자", "사실", "근거"],
+        "properties": {
+          "일자": { "type": "string", "description": "YYYY.MM.DD. 형식. 불명이면 'YYYY.MM.경'" },
+          "사실": { "type": "string" },
+          "근거": { "type": "string", "description": "입력 파일 출처 또는 증거 표시. 예: '상담메모.md §2 / 갑2'. 빈 값 금지" }
+        }
+      }
+    },
+    "쟁점": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "제목", "우리주장"],
+        "properties": {
+          "id": { "type": "string", "description": "예: 쟁점1" },
+          "제목": { "type": "string" },
+          "우리주장": { "type": "string" },
+          "상대주장": { "type": ["string", "null"], "description": "상대 서면 도착 전이면 null" },
+          "법리ref": { "type": ["string", "null"], "description": "리서치 파일 앵커. 예: '리서치/쟁점별_법리.md#쟁점1'" }
+        }
+      }
+    },
+    "증거": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["표시", "증거명", "입증취지"],
+        "properties": {
+          "표시": { "type": "string", "description": "갑1, 갑2-1, 을1 형식" },
+          "증거명": { "type": "string" },
+          "입증취지": { "type": "string" }
+        }
+      }
+    },
+    "청구": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["유형", "청구취지문안"],
+        "properties": {
+          "유형": { "type": "string", "enum": ["이행", "확인", "형성"] },
+          "청구취지문안": { "type": "string" },
+          "금액": { "type": ["number", "null"] },
+          "산정내역": { "type": "string" }
+        }
+      }
+    },
+    "확인필요": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "에이전트가 추측하지 않고 변호사 확인으로 넘긴 항목. 서면 말미 체크리스트로 출력됨"
+    }
+  }
+}
