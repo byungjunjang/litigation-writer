@@ -15,7 +15,7 @@
   브리프/리포트·리뷰 패키지). **루트에 별도 `.superpowers/` 폴더를 만들지
   않는다** — 스킬 기본 경로 대신 이 폴더를 쓴다.
 
-법령·판례 출처는 korean-law-mcp(국가법령정보센터 Open API)다. 구 git 저장소(legalize-kr/precedent-kr) 대조 방식은 2026-07 폐지했다.
+법령·판례 출처는 korean-law-mcp(국가법령정보센터 Open API)뿐이다. 로컬 git 저장소(legalize-kr 등)나 웹 검색 결과를 대조·인용 근거로 쓰지 않는다.
 
 ## 듀얼 호스트 (Claude Code + Codex)
 
